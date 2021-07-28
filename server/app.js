@@ -1,7 +1,6 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const express = require('express');
-const fs = require('fs');
 const app = express();
 
 dotenv.config({path:'./config.env'});
@@ -21,10 +20,10 @@ const PORT = process.env.PORT;
 //     res.send(`Hii app this side`);
 // });
 
-app.get('/about', (req, res) => {
-    const a = fs.readFileSync('about.html')
-    res.send(a.toString());
-})
+// app.get('/about', (req, res) => {
+//     const a = fs.readFileSync('about.html')
+//     res.send(a.toString());
+// })
 
 app.listen(PORT, () => {
     console.log(`Server is running at port ${PORT}`);
