@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const authenticate = require("../middleware/authenticate");
 require('../db/conn');
 const User = require("../model/user");
 
@@ -57,11 +58,11 @@ router.post('/signin', async (req, res) => {
         if (userLogin) {
             const isMatch = await bcrypt.compare(password, userLogin.password);
 
-            token = await  userLogin.generateAuthToken();
+            token = await userLogin.generateAuthToken();
 
-            res.cookie("jwtoken", token,{
-                expires:new Date(Date.now() + 25892000000),
-                httpOnly:true
+            res.cookie("jwtoken", token, {
+                expires: new Date(Date.now() + 25892000000),
+                httpOnly: true
             });
 
             if (!isMatch) {
@@ -71,7 +72,7 @@ router.post('/signin', async (req, res) => {
                 res.json({ message: "User Signin successfully" });
             }
 
- 
+
         } else {
             res.status(400).json({ error: "User error" });
 
@@ -84,3 +85,9 @@ router.post('/signin', async (req, res) => {
     }
 });
 module.exports = router;
+
+
+app.get('/about', authenticate, (req, res) => {
+    const a = fs.readFileSync('about.html')
+    res.send(a.toString());
+})
